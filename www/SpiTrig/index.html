@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
+    <title>SPI trigger</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="js/app.js"></script>
+</head>
+
+<body>
+   	<div id='content'>
+   		<div id='status_message'>Connecting...</div><br>
+        <! SPI simulation section -------------------------------->
+   		<label id="SpiSimFlagLb"> 
+           <input type="checkbox" id="SpiSimFlag" value="SpiSimTrig" checked /> 
+           trigger on simulated SPI bus 
+        </label>
+        <br>
+        <table id="SpiSimTable">
+          <tr>
+          <th> <label id="SpiSimBitsLb" for="SpiSimBits">number of bits for simulated SPI</label> </th>
+          <th> <input type="number" id="SpiSimBits" min="16" max="32" value="16"/> </th>
+          </tr>
+          <tr> 
+          <th> <label id="SpiSimMosiLb" for="SpiSimMosi">simulated MOSI values</label> </th>
+          <th> <textarea id="SpiSimMosi" cols="40" rows="4" name="SpiSimMosi">33AA</textarea> </th>
+          </tr>
+          <tr>
+          <th> <label id="SpiSimPeriodLb" for="SpiSimPeriod">clock cycles for one SPI bit</label> </th>
+          <th> <input type="range" id="SpiSimPeriod" min="1" max="4095" value="600"/> </th> 
+          </tr>
+          <tr>
+          <th></th>
+          <th> <input type="text" id="SpiSimPeriodTx" value="FFFF"/> </th> 
+          </tr>
+        </table>
+        
+        <br>
+        <! SPI MOSI trigger section ------------------------------>
+        <table id="SpiTrMosiTable">
+          <tr>
+          <th> <label id="SpiTrMosiMaskLb" for="SpiTrMosiMask">select valid bits for MOSI pattern</label> </th>
+          <th> <input type="text" id="SpiTrMosiMask" value="FFFF"/> </th>
+          </tr>
+          <tr> 
+          <th> <label id="SpiTrMosiLb" for="SpiTrMosi">MOSI pattern</label> </th>
+          <th> <input type="text" id="SpiTrMosi" value="33AA"/> </th>
+          </tr>
+        </table>
+         <br>
+          
+        <! SPI MISO trigger section ------------------------------>
+        <label id="SpiTrMisoFlagLb"> 
+           <input type="checkbox" id="SpiTrMisoFlag" value="SpiTrMisoVal" checked/> 
+           trigger on MISO 
+        </label> <br>
+        <table id="SpiTrMisoTable">
+          <tr>
+          <th> <label id="SpiTrMisoMaskLb" for="SpiTrMisoMask">select valid bits for MISO pattern</label> </th>
+          <th> <input type="text" id="SpiTrMisoMask" value="FF07"/> </th>
+          </tr>
+          <tr> 
+          <th> <label id="SpiTrMisoLb" for="SpiTrMosi">MISO pattern</label> </th>
+          <th> <input type="text" id="SpiTrMiso" value="3303"/> </th>
+          </tr>
+        </table>
+        
+         
+		
+   	</div>
+</body>
+</html>

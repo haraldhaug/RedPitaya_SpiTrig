@@ -1,0 +1,56 @@
+SPI trigger for RedPitaya
+
+oscilloscopes often have a trigger option for SPI messages.
+They are able to trigger on one of MOSI or MISO.
+BUT: when debugging SPI telegrams there might be redundant patterns on MISO representing answers to different MOSI commands.
+
+This SPI trigger implementation shall be more flexible:
+- trigger on MISO pattern but only if the previous MOSI pattern matched a predefined value.
+Including the option of wildcard bits.
+
+Please consider this implementation as a feasibility study:
+- I wanted to check if I am able to program the RedPitaya
+- I wanted to check the effort to implement an SPI trigger
+
+This implementation does not (yet) realize a real SPI trigger
+- triggering is only possible on RedPitaya internal signals
+- the WEB interface does not check plausibility of any data (e.g. the patterns are supposed hex values but there is just a text input that could have any kind of text)
+- the WEB interface has a checkbox "trigger on simulated SPI bus" - this field does not have much impact
+- the WEB interface has a text input for simulated MOSI messages - this field is ignored - simulated MOSI messages are hardcoded in the fpga code.
+- there is no feedback from the FPGA to the WEB interface about success / number of trigger events...
+
+The implementation has been simulated but not really tested carefully.
+There might be still some bugs in this implementation.
+I do not have access to a 4 channel oscilloscope here ;-)
+
+One assumption: the SPI SCLK frequency will be generally slower than the clock of the housekeeping module.
+(50MHz)
+
+-------------------------------------------------------------
+here some explanations what I did
+------------------------------------------------
+program the RedPitaya micro SD card with ISO 0.97-RC5
+git clone https://github.com/RedPitaya/RedPitaya.git
+git checkout -b usr97x5 v0.97-RC5
+
+api
+---
+changed the files rp.c, rp.h and housekeeping.h
+compile the api on the RedPitaya
+make api
+cp ~/RedPitaya/api/lib/librp.so /opt/redpitaya/lib/librp.so 
+cp ~/RedPitaya/build/include/redpitaya/rp.h /opt/redpitaya/include/redpitaya/rp.h
+
+FPGA
+. /opt/Xilinx/Vivado/2016.4/settings64.sh
+sudo ln -s /usr/bin/make /usr/bin/gmake
+clear the “SpiTrig/out” folder
+make PRJ=SpiTrig
+scp spi_sim_trg.bit  root@rp-XXXXXX:/opt/redpitaya/fpga/spi_sim_trg.bit
+
+web interface:
+copy the SpiTrig folder to /opt/redpitaya/www/apps/
+make INSTALL_DIR=/opt/redpitaya
+
+
+
